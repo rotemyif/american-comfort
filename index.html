@@ -24,13 +24,15 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: 'Georgia', serif;
       background: var(--cream);
       color: var(--dark);
     }
 
-    /* ── NAV ── */
+    /* ── NAV── */
     nav {
       background: var(--white);
       border-bottom: 1px solid #E8E2DA;
@@ -684,6 +686,135 @@
       justify-content: space-between;
       align-items: center;
     }
+
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--warm-brown);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px;
+      left: 0; right: 0;
+      background: var(--white);
+      border-bottom: 1px solid #E8E2DA;
+      padding: 16px 24px 24px;
+      z-index: 99;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; }
+    .mobile-menu ul li { border-bottom: 1px solid #F0EDE8; }
+    .mobile-menu ul li a {
+      display: block;
+      padding: 14px 0;
+      font-family: 'Arial', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--dark);
+      text-decoration: none;
+    }
+    .mobile-menu .mobile-shop-btn {
+      margin-top: 16px;
+      width: 100%;
+      background: var(--warm-brown);
+      color: var(--white);
+      border: none;
+      padding: 14px;
+      border-radius: 4px;
+      font-family: 'Arial', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ── TABLET (≤ 900px) ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links, .nav-actions { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .hero {
+        flex-direction: column;
+        padding: 48px 24px;
+        text-align: center;
+        min-height: auto;
+      }
+      .hero-content { max-width: 100%; }
+      .hero-ctas { justify-content: center; }
+      .hero-visual { width: 100%; }
+      .sofa-card { width: 100%; max-width: 360px; margin: 0 auto; }
+
+      .trust-bar { padding: 16px 24px; gap: 20px; }
+
+      .section { padding: 48px 24px; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+      .featured-section { padding: 48px 24px; }
+      .featured-inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .featured-img { height: 260px; font-size: 80px; }
+      .featured-content h2 { font-size: 26px; }
+      .featured-price { font-size: 26px; }
+
+      footer {
+        grid-template-columns: 1fr 1fr;
+        padding: 40px 24px;
+        gap: 32px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        padding: 16px 24px;
+      }
+    }
+
+    /* ── MOBILE (≤ 600px) ── */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 32px; }
+      .hero p { font-size: 14px; }
+      .btn-primary, .btn-outline { padding: 12px 20px; font-size: 13px; width: 100%; text-align: center; }
+      .hero-ctas { flex-direction: column; }
+
+      .trust-bar { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 20px; }
+
+      .section { padding: 40px 16px; }
+      .section-header h2 { font-size: 26px; }
+      .products-grid { grid-template-columns: 1fr; }
+
+      .featured-section { padding: 40px 16px; }
+      .featured-actions { flex-direction: column; }
+      .featured-actions button { width: 100%; }
+
+      footer { grid-template-columns: 1fr; padding: 32px 16px; gap: 24px; }
+
+      /* Widget full-screen on mobile */
+      #chat-widget-container { bottom: 16px; right: 16px; }
+      .chat-panel {
+        width: calc(100vw - 32px);
+        max-width: 360px;
+      }
+      .chat-messages { height: 240px; }
+    }
   </style>
 </head>
 <body>
@@ -711,7 +842,24 @@
     <div class="nav-actions">
       <button>Shop Now</button>
     </div>
+
+    <!-- Hamburger (mobile only) -->
+    <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#" onclick="toggleMenu()">Living Room</a></li>
+      <li><a href="#" onclick="toggleMenu()">Bedroom</a></li>
+      <li><a href="#" onclick="toggleMenu()">Dining</a></li>
+      <li><a href="#" onclick="toggleMenu()">Office</a></li>
+      <li><a href="#" onclick="toggleMenu()">Sale</a></li>
+    </ul>
+    <button class="mobile-shop-btn">Shop Now</button>
+  </div>
 
   <!-- ── HERO ── -->
   <section class="hero">
@@ -899,7 +1047,7 @@
             </svg>
           </a>
           <!-- RCS icon -->
-          <a class="header-channel-icon" href="https://tools.vonage.com/rcs/v1/deeplink/XXl_KQf7jO6Ljof6gBm-yDZq5ENZPl1F1JPZxNskf7U_dCb0KFLVNcaCvdnl98pKT1xj1wZUfWzwfh-67JHbUdB7tWID7s3Wn0Z7em9Wt-rKI-x4SXg9Olytg2qJZUqxw_N26pBDXZBC_L2drzq0T0GEKRknZBTKHFJYUgcIrHcHj7NEMpxjfIFSwXkf6jtrCuss_T2MqQ" target="_blank" rel="noopener" title="Text / RCS">
+          <a class="header-channel-icon" href="https://tools.vonage.com/rcs/v1/deeplink/AmericanComfortDemo" target="_blank" rel="noopener" title="Text / RCS">
             <svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.85)">
               <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
             </svg>
@@ -1302,6 +1450,10 @@
         iconClose.classList.remove('hidden');
         if (badge) badge.style.display = 'none';
       }
+    }
+
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
     }
 
     function handleKey(e) {
